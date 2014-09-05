@@ -22,6 +22,16 @@ use Duality\System\App;
 // Create application container
 $app = new App;
 
+// Register database
+$app->register('db', function () {
+    return new SQLite(SQLITE_DB);
+});
+
+// Register homepage document (from file template)
+$app->register('homepage', function() {
+	return HtmlDoc::createFromFilePath('./data/template.html');
+});
+
 // Register application services
 $app->register('server', function() use ($app) {
 
@@ -39,16 +49,6 @@ $app->register('server', function() use ($app) {
 	});
 
 	return $server;
-});
-
-// Register database
-$app->register('db', function () {
-    return new SQLite(SQLITE_DB);
-});
-
-// Register homepage document (from file template)
-$app->register('homepage', function() {
-	return HtmlDoc::createFromFilePath('./data/template.html');
 });
 
 // Configure server with service /example/json
