@@ -79,7 +79,7 @@ $app->call('server')->addDefaultRoute(function() use ($app) {
 
 	// Tell document to append new HTML content
 	$app->call('homepage')
-		->appendTo('//div[@id="container"]', '<h1 id="title">Hello Duality!</h1>');
+		->appendTo('//div[@class="page-header"]', '<h1 id="title">Hello Duality!</h1>');
 
 	// Tell response what is the output
 	$app->call('response')->setContent($app->call('homepage')->save());
