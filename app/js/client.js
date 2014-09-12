@@ -9,7 +9,10 @@
 var Client = {};
 
 // Define client routes configuration
-Client.routes = function (window, $) {
+Client.routes = function () {
+
+	// Set jQuery alias
+	var $ = Client.$;
 
 	// Just call server at /example/json
 	$.getJSON('example/json', {get: 'test'}, function (data) {
@@ -37,8 +40,12 @@ Client.init = function () {
 	// Call jQuery on document ready
 	jQuery(function($) {
 
+		// add references to window and jQuery to client
+		Client.window = window;
+		Client.$ = $;
+
 		// Call client routes configuration
-		Client.routes(window, $);
+		Client.routes();
 	});
 
 	return true;
