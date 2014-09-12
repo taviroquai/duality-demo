@@ -41,7 +41,7 @@ $app->register('server', function() use ($app) {
 	});
 
 	// Configure server with service /example/json
-	$server->addRoute('/\/example\/json/i', function() use ($app) {
+	$server->addRoute('/\/example\/json/i', function(&$req, &$res) use ($app) {
     
 		// Create a default output
 		$out = array('msg' => 'Example get data from database with ajax...', 'items' => array());
@@ -58,20 +58,19 @@ $app->register('server', function() use ($app) {
 	    }
 	    
 		// Tell response to add HTTP content type header and set output
-		$app->call('response')
-			->addHeader('Content-type', 'application/json')
+		$res->addHeader('Content-type', 'application/json')
 			->setContent(json_encode($out));
 	});
 
 	// Configure default service
-	$server->addDefaultRoute(function() use ($app) {
+	$server->addDefaultRoute(function(&$req, &$res) use ($app) {
 
 		// Tell document to append new HTML content
 		$app->call('homepage')
 			->appendTo('//div[@class="page-header"]', '<h1 id="title">Hello Duality!</h1>');
 
 		// Tell response what is the output
-		$app->call('response')->setContent($app->call('homepage')->save());
+		$res->setContent($app->call('homepage')->save());
 
 	});
 
