@@ -25,7 +25,7 @@ Minimal API Usage Example
 	$request = $server->getRequestFromGlobals();
 
 	// Create a default HTTP response
-	$response $server->createResponse();
+	$response = $server->createResponse();
 
 	// Define default route
 	$server->addDefaultRoute(function() use ($response) {
