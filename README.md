@@ -11,6 +11,7 @@ Install
 Minimal API Usage Example
 -------------
 
+```php
 	// Include local configuration
 	include 'config/app.php';
 
@@ -36,3 +37,4 @@ Minimal API Usage Example
 
 	// Finaly, tell server to start listening
 	$server->listen($request, $response);
+```
