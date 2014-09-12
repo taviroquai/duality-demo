@@ -29,10 +29,10 @@ Minimal API Usage Example
 	$response = $server->createResponse();
 
 	// Define default route
-	$server->addDefaultRoute(function() use ($response) {
+	$server->addDefaultRoute(function($res, $res) {
 
 		// Tell response what is the output
-		$response->setContent('Hello World!');
+		$res->setContent('Hello World!');
 	});
 
 	// Finaly, tell server to start listening
