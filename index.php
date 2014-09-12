@@ -1,15 +1,7 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', true);
-
-// Configure autoloaders
-require_once './vendor/autoload.php';
-require_once './src/autoload.php';
-
 // Load local configuration
-define('BASE_URL', '/duality-demo');
-define('SQLITE_DB', 'sqlite:./data/db.sqlite');
+include_once './config/app.php';
 
 // What will we use in our application?
 use Demo\User;
@@ -48,42 +40,42 @@ $app->register('server', function() use ($app) {
 		return $server->createResponse();
 	});
 
+	// Configure server with service /example/json
+	$server->addRoute('/\/example\/json/i', function() use ($app) {
+    
+		// Create a default output
+		$out = array('msg' => 'Example get data from database with ajax...', 'items' => array());
+	    
+	    try {
+	        // Get data
+	        $out['items'] = $app->call('db')
+	        		->createTableFromEntity(new User())
+	        		->loadPage(0, 10)
+	        		->toArray();
+
+	    } catch (\PDOException $e) {
+	        $out['msg'] = 'So bad! ' . $e->getMessage();
+	    }
+	    
+		// Tell response to add HTTP content type header and set output
+		$app->call('response')
+			->addHeader('Content-type', 'application/json')
+			->setContent(json_encode($out));
+	});
+
+	// Configure default service
+	$server->addDefaultRoute(function() use ($app) {
+
+		// Tell document to append new HTML content
+		$app->call('homepage')
+			->appendTo('//div[@class="page-header"]', '<h1 id="title">Hello Duality!</h1>');
+
+		// Tell response what is the output
+		$app->call('response')->setContent($app->call('homepage')->save());
+
+	});
+
 	return $server;
-});
-
-// Configure server with service /example/json
-$app->call('server')->addRoute('/\/example\/json/i', function() use ($app) {
-    
-	// Create a default output
-	$out = array('msg' => 'Example get data from database with ajax...', 'items' => array());
-    
-    try {
-        // Get data
-        $out['items'] = $app->call('db')
-        		->createTableFromEntity(new User())
-        		->loadPage(0, 10)
-        		->toArray();
-
-    } catch (\PDOException $e) {
-        $out['msg'] = 'So bad! ' . $e->getMessage();
-    }
-    
-	// Tell response to add HTTP content type header and set output
-	$app->call('response')
-		->addHeader('Content-type', 'application/json')
-		->setContent(json_encode($out));
-});
-
-// Configure default service
-$app->call('server')->addDefaultRoute(function() use ($app) {
-
-	// Tell document to append new HTML content
-	$app->call('homepage')
-		->appendTo('//div[@class="page-header"]', '<h1 id="title">Hello Duality!</h1>');
-
-	// Tell response what is the output
-	$app->call('response')->setContent($app->call('homepage')->save());
-
 });
 
 // Finally, tell server to execute services
