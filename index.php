@@ -30,16 +30,6 @@ $app->register('server', function() use ($app) {
 	// Create a server with hostname and base URL
 	$server = new Server('localhost', new Url(BASE_URL));
 
-	// Get request from globals
-	$app->register('request', function() use ($server) {
-		return $server->getRequestFromGlobals();
-	});
-
-	// Create a default HTTP response
-	$app->register('response', function() use ($server) {
-		return $server->createResponse();
-	});
-
 	// Configure server with service /example/json
 	$server->addRoute('/\/example\/json/i', function(&$req, &$res) use ($app) {
     
@@ -78,7 +68,4 @@ $app->register('server', function() use ($app) {
 });
 
 // Finally, tell server to execute services
-$app->call('server')->listen(
-	$app->call('request'),
-	$app->call('response')
-);
+$app->call('server')->listen();

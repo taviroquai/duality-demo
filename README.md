@@ -22,19 +22,13 @@ Minimal API Usage Example
 	// Create a new server
 	$server = new Server('localhost', new Url('/duality'));
 
-	// Load request from globals
-	$request = $server->getRequestFromGlobals();
-
-	// Create a default HTTP response
-	$response = $server->createResponse();
-
 	// Define default route
-	$server->addDefaultRoute(function($res, $res) {
+	$server->addDefaultRoute(function(&$req, &$res) {
 
 		// Tell response what is the output
 		$res->setContent('Hello World!');
 	});
 
 	// Finaly, tell server to start listening
-	$server->listen($request, $response);
+	$server->listen();
 ```
