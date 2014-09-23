@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', true);
 
 // Configure autoloaders
-require_once '../duality/vendor/autoload.php';
+require_once './vendor/autoload.php';
 require_once './src/autoload.php';
 
 // Define local configuration
