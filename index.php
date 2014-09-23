@@ -6,8 +6,6 @@ $config = include_once('./config/app.php');
 // What will we use in our application?
 use Demo\User;
 use Duality\System\Structure\HtmlDoc;
-use Duality\System\Structure\Url;
-use Duality\System\Service\Server;
 use Duality\System\App;
 
 // Create application container
