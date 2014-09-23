@@ -35,7 +35,7 @@ $app->register('cmd', function() use ($app) {
 $app->call('cmd')->init();
 
 // Register ssh command responder
-if (is_array($config['remote'])) {
+if (isset($config['remote'])) {
 	$app->call('cmd')->addResponder('/^ssh:(.*):(.*)$/i', function($args) use ($app) {
 		$args = array_slice($args, 1);
 		$config = $app->getConfig();
