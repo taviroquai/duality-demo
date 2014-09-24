@@ -24,6 +24,25 @@
 		<!-- Example of content added by php -->
 	</div>
 	<!-- Example of content added by ajax -->
+	<div class="row">
+
+		<!-- Ajax Example -->
+		<div id="ajax-content" class="col-lg-6"></div>
+
+		<!-- Validation Example -->
+		<div id="ajax-content" class="col-lg-6">
+			<h4>Validation Example</h4>
+			<form action="example/validate" method="post">
+			    <div class="form-group">
+			        <label class="form-label">Email Address</label>
+			        <input class="form-control" type="text" name="email" placeholder="Enter email address..." />
+			        <div class="assist-msg assist-msg-rule1 help-block"></div>
+			    </div>
+			    <button class="btn btn-large btn-primary btn-block" type="submit">Submit</button>
+			</form>
+		</div>
+	</div>
+
 </div>
 
 <noscript>
@@ -35,6 +54,9 @@
 
 <!-- add the bootstrap framework -->
 <script src="theme/js/bootstrap.min.js"></script>
+
+<!-- add FormAssist jQuery plugin: https://github.com/taviroquai/FormAssist -->
+<script src="app/js/formassist.js"></script>
 
 <!-- add the client script for UI events and communications -->
 <script src="app/js/client.js"></script>

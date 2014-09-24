@@ -18,12 +18,18 @@ Client.routes = function () {
 	$.getJSON('example/json', {get: 'test'}, function (data) {
 
 		// Add data to document
-		$('#container').append('<p>' + data.msg + '</p>');
-		$('#container').append('<table class="table col-md-12" />');
+		$('#ajax-content').append('<h4>' + data.msg + '</h4>');
+		$('#ajax-content').append('<table class="table col-md-12" />');
 		$.each(data.items, function (i, item) {
-			$('#container table').append('<tr><td>' + item.id + '</td><td>' + item.email + '</td></tr>');
+			$('#ajax-content table').append('<tr><td>' + item.id + '</td><td>' + item.email + '</td></tr>');
 		});
 	});
+
+	$('form').FormAssist(function(form, e) {
+		e.preventDefault(); // example purposes only
+		form.validateAll();
+		return false; // example purposes only
+	}).rule('rule1', 'input[name="email"]');
 }
 
 // Define client initialization

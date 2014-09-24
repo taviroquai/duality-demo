@@ -20,7 +20,7 @@ $app->register('homepage', function() {
 	return HtmlDoc::createFromFilePath('./data/template.html');
 });
 
-// Configure server with service /example/json
+// Route /example/json
 $app->call('server')->addRoute('/\/example\/json/i', function(&$req, &$res) use ($app) {
 
 	// Create a default output
@@ -42,7 +42,18 @@ $app->call('server')->addRoute('/\/example\/json/i', function(&$req, &$res) use 
 		->setContent(json_encode($out));
 });
 
-// Configure default service
+// Route /example/validate using Assist jQuery plugin
+$app->call('server')->addRoute('/\/example\/validate/i', function(&$req, &$res) use ($app) {
+
+	// Create a default output
+	$out = array('result' => 0, 'type' => 'has-error', 'msg' => 'Validate example... always fail :p');
+    
+	// Tell response to add HTTP content type header and set output
+	$res->addHeader('Content-type', 'application/json')
+		->setContent(json_encode($out));
+});
+
+// Default route /
 $app->call('server')->addDefaultRoute(function(&$req, &$res) use ($app) {
 
 	// Tell document to append new HTML content
