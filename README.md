@@ -6,7 +6,8 @@ Install
 
 1. Download zip file and extract to an Apache web directory
 2. Install dependencies with composer: php composer.phar install
-3. Edit config/app.php and change your local settings
+3. Give write permissions to webserver to data folder
+4. Edit config/app.php and change your local settings
 
 Minimal API Usage Example
 -------------
