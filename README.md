@@ -4,10 +4,11 @@ Demo of Duality micro framework
 Install
 -------
 
-1. Download zip file and extract to an Apache web directory
-2. Install dependencies with composer: php composer.phar install
-3. Give write permissions to webserver to data folder
-4. Edit config/app.php and change your local settings
+1. Download **zip** file and **extract** to an Apache web directory
+2. Check and install the **php extensions**: apc and intl
+3. Install dependencies with **composer**: php composer.phar install
+4. Give **write permissions** to webserver to data folder
+5. Edit **config/app.php** and change your local settings
 
 Minimal API Usage Example
 -------------
