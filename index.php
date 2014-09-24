@@ -12,7 +12,8 @@ use Duality\System\App;
 $app = new App(dirname(__FILE__), $config);
 
 // Init default services: logging, db, session, auth, cache, i18n, mailer and paginator
-$app->initDefaultServices();
+$app->addDefaultServices();
+$app->initServices();
 
 // Register homepage document (from file template)
 $app->register('homepage', function() {
