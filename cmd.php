@@ -1,7 +1,18 @@
 <?php
 
+// Setup configuration file
+$config_path = './config/app.php';
+if (!file_exists($config_path)) {
+	die('Error: configuration file not found: '.$config_path.PHP_EOL);
+}
+
 // Load local configuration
-$config = include_once('./config/app.php');
+$config = include_once($config_path);
+
+// Validate configuration
+if (!is_array($config)) {
+	die('Error: configuration file does not return array.'.PHP_EOL);
+}
 
 // What will we use in our application?
 use Demo\User;
