@@ -29,7 +29,9 @@ Client.routes = function () {
 		e.preventDefault(); // example purposes only
 		form.validateAll();
 		return false; // example purposes only
-	}).rule('rule1', 'input[name="email"]');
+	})
+	.rule('rule1', 'input[name="email"]')
+	.rule('rule2', 'input[name="pass"]')
 }
 
 // Define client initialization

@@ -46,8 +46,33 @@ $app->call('server')->addRoute('/\/example\/json/i', function(&$req, &$res) use 
 $app->call('server')->addRoute('/\/example\/validate/i', function(&$req, &$res) use ($app) {
 
 	// Create a default output
-	$out = array('result' => 0, 'type' => 'has-error', 'msg' => 'Validate example... always fail :p');
-    
+	$fail = array('result' => 0, 'type' => 'has-error', 'msg' => 'Default... always fail :p!');
+	$success = array('result' => 1, 'type' => 'has-success', 'msg' => 'OK!');
+	$out = $fail;
+	
+	// Validate params
+	$params = $req->getParams();
+	switch($params['_assist_rule']) {
+
+		// Validate email
+		case 'rule1':
+			if (!filter_var($params['email'], FILTER_VALIDATE_EMAIL)) {
+				$out['msg'] = 'Invalid email address!';
+			} else {
+				$out = $success;
+			}
+			break;
+
+		// validate pass
+		case 'rule2':
+			if (empty($params['pass']) || strlen($params['pass']) < 6) {
+				$out['msg'] = 'Password too short. At least 6 characters.';
+			} else {
+				$out = $success;
+			}
+			break;
+	}
+	
 	// Tell response to add HTTP content type header and set output
 	$res->addHeader('Content-type', 'application/json')
 		->setContent(json_encode($out));
