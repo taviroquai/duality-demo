@@ -28,17 +28,19 @@ Minimal API Usage Example
     // Create a new application container
     $app = new App(dirname(__FILE__), $config);
      
-    // Create a new server and initiate defaults
-    $server = new Server($app);
-    $server->init();
+    // Register the HTTP server
+    $app->register('server', function() use ($app) {
+        return new Server($app); 
+    });
+    $app->initServices();
      
     // Define default route
-    $server->addDefaultRoute(function(&$req, &$res) {
+    $app->call('server')->addDefaultRoute(function(&$req, &$res) {
        
-            // Tell response what is the output
-            $res->setContent('Hello World!');
+        // Tell response what is the output
+        $res->setContent('Hello World!');
     });
         
     // Finaly, tell server to start listening
-    $server->listen();
+    $app->call('server')->listen();
 ```
