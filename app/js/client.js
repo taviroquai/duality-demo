@@ -30,8 +30,8 @@ Client.routes = function () {
 		form.validateAll();
 		return false; // example purposes only
 	})
-	.rule('rule1', 'input[name="email"]')
-	.rule('rule2', 'input[name="pass"]')
+	.rule('email', 'input[name="email"]')
+	.rule('pass', 'input[name="pass"]')
 }
 
 // Define client initialization
