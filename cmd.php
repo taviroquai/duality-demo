@@ -27,23 +27,20 @@ $app = new App(dirname(__FILE__), $config);
 
 // Register database
 if (isset($config['db_dsn'])) {
-	$app->register('db', function () use ($app) {
-		$config = $app->getConfig();
-	    if (strpos($config['db_dsn'], 'sqlite') === 0) {
-	    	$db = new SQLite($app);
-	    } else {
-	    	$db = new MySql($app);
-	    }
-	    return $db;
+	$app->register('db', function () use ($app, $config) {
+	    return strpos($config['db_dsn'], 'mysql') === 0 ? 
+			new MySql($app) : 
+			new SQLite($app);
 	});
-	$app->call('db')->init();
 }
 
 // Register commander
 $app->register('cmd', function() use ($app) {
 	return new Commander($app);
 });
-$app->call('cmd')->init();
+
+// Initiate services
+$app->initServices();
 
 // Register ssh command responder
 if (isset($config['remote'])) {
