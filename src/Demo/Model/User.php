@@ -1,9 +1,9 @@
 <?php
 
-namespace Demo;
+namespace Demo\Model;
 
-use \Duality\System\Structure\Property;
-use \Duality\System\Structure\Entity;
+use Duality\System\Structure\Property;
+use Duality\System\Structure\Entity;
 
 class User extends Entity
 {
