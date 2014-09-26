@@ -64,7 +64,7 @@ $app->call('server')->addRoute('/\/example\/validate/i', function(&$req, &$res) 
 		)
 	);
 	
-	// Validate input
+	// Validate HTTP request input with rules and default output
 	$app->call('validator')->validateAssist($req, $rules, $out);
 	
 	// Tell response to add HTTP content type header and set output
