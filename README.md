@@ -24,8 +24,8 @@ Minimal API Usage Example
 	require_once './vendor/autoload.php';
         
     // Tell what our application uses
-    use Duality\System\Service\Server;
-    use Duality\System\App;
+    use Duality\Service\Server;
+    use Duality\App;
       
     // Create a new application container
     $app = new App(dirname(__FILE__), $config);

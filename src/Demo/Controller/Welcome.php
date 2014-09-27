@@ -2,13 +2,19 @@
 
 namespace Demo\Controller;
 
-use Duality\System\Service\UserController;
+use Duality\Service\UserController;
 use Demo\Model\User;
-use Duality\System\Structure\HtmlDoc;
+use Duality\Structure\HtmlDoc;
 
 class Welcome
 extends UserController
 {
+    /**
+     * Holds the default HTML document
+     * @var \Duality\Structure\HtmlDoc
+     */
+    protected $doc;
+    
 	/**
 	 * Init method will run before calling any action
 	 * Here you can use filters or register common operations
@@ -17,37 +23,39 @@ extends UserController
 	{
 		/**
 		 * Example of a native template system
-		 * Register homepage document (from file template)
+		 * Set homepage document (from file template)
 		 */
-		$this->app->register('homepage', function() {
-			return HtmlDoc::createFromFilePath('./data/template.html');
-		});
+		$this->doc = HtmlDoc::createFromFilePath('./data/template.html');
 	}
 
 	/**
 	 * Run request to get users list
-	 * @param Duality\System\Http\Request $req
-	 * @param Duality\System\Http\Response $res
+	 * @param \Duality\Http\Request $req
+	 * @param \Duality\Http\Response $res
+     * @param array $params
 	 */
-	public function doIndex(&$req, &$res) {
+	public function doIndex(
+        \Duality\Http\Request &$req,
+        \Duality\Http\Response &$res,
+        $params = array()
+    ) {
 
 		// Tell document to append new HTML content
-		$this->app->call('homepage')
-			->appendTo(
-				'//div[@class="page-header"]',
-				'<h1 id="title">Welcome to Duality!</h1>'
-			);
+		$this->doc->appendTo(
+            '//div[@class="page-header"]',
+            '<h1 id="title">Welcome to Duality!</h1>'
+        );
 
 		// Tell response what is the output
-		$res->setContent($this->app->call('homepage')->save());
+		$res->setContent($this->doc->save());
 	}
 
 	/**
 	 * Run request to get users list
-	 * @param Duality\System\Http\Request $req
-	 * @param Duality\System\Http\Response $res
+	 * @param Duality\Http\Request $req
+	 * @param Duality\Http\Response $res
 	 */
-	public function doUsersList(&$req, &$res) {
+	public function doUsersList(&$req, &$res, $params = array()) {
 
 		// Create a default output
 		$out = array('msg' => 'Example get data from database with ajax...', 'items' => array());
@@ -70,10 +78,10 @@ extends UserController
 
 	/**
 	 * Run request to get users list
-	 * @param Duality\System\Http\Request $req
-	 * @param Duality\System\Http\Response $res
+	 * @param Duality\Http\Request $req
+	 * @param Duality\Http\Response $res
 	 */
-	public function doValidation(&$req, &$res) {
+	public function doValidation(&$req, &$res, $params = array()) {
 
 		// Set default output
 		$out = array('result' => 1, 'type' => 'has-success', 'msg' => 'OK!');

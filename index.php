@@ -4,8 +4,7 @@
 $config = include_once('./config/app.php');
 
 // What will we use in our application?
-use Duality\System\Structure\HtmlDoc;
-use Duality\System\App;
+use Duality\App;
 
 // Create application container
 $app = new App(dirname(__FILE__), $config);
@@ -14,20 +13,13 @@ $app = new App(dirname(__FILE__), $config);
 $app->addDefaultServices();
 $app->initServices();
 
-// Default route /
-$app->call('server')->addDefaultRoute('\Demo\Controller\Welcome@doIndex');
+// Get server
+$server = $app->call('server');
 
-// Route /example/json
-$app->call('server')->addRoute(
-	'/\/example\/json/i', 
-	'\Demo\Controller\Welcome@doUsersList'
-);
-
-// Route /example/validate using Assist jQuery plugin
-$app->call('server')->addRoute(
-	'/\/example\/validate/i', 
-	'\Demo\Controller\Welcome@doValidation'
-);
+// Set demo routes
+$server->setHome('\Demo\Controller\Welcome@doIndex');
+$server->addRoute('/\/json/i',      '\Demo\Controller\Welcome@doUsersList');
+$server->addRoute('/\/validate/i',  '\Demo\Controller\Welcome@doValidation');
 
 // Tell server to execute services
-$app->call('server')->listen();
+$server->listen();

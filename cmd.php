@@ -15,12 +15,11 @@ if (!is_array($config)) {
 }
 
 // What will we use in our application?
-use Demo\User;
-use Duality\System\Database\SQLite;
-use Duality\System\Database\MySql;
-use Duality\System\Service\Commander;
-use Duality\System\Service\SSH;
-use Duality\System\App;
+use Duality\Database\SQLite;
+use Duality\Database\MySql;
+use Duality\Service\Commander;
+use Duality\Service\SSH;
+use Duality\App;
 
 // Create application container
 $app = new App(dirname(__FILE__), $config);

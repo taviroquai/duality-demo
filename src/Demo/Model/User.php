@@ -2,8 +2,8 @@
 
 namespace Demo\Model;
 
-use Duality\System\Structure\Property;
-use Duality\System\Structure\Entity;
+use Duality\Structure\Property;
+use Duality\Structure\Entity;
 
 class User extends Entity
 {
