@@ -8,13 +8,13 @@
  * @license     MIT
  */
 
-namespace Duality\System\Database;
+namespace Duality\Database;
 
-use Duality\System\Core\DualityException;
-use Duality\System\Structure\Property;
-use \Duality\System\Service\Database;
-use \Duality\System\Structure\DbTable;
-use \Duality\System\App;
+use Duality\Core\DualityException;
+use Duality\Structure\Property;
+use \Duality\Service\Database;
+use \Duality\Structure\DbTable;
+use \Duality\App;
 
 /**
  * SQLite database query writer
@@ -23,13 +23,13 @@ class SQLite extends Database
 {
     /**
      * The dependent application container
-     * @var Duality\System\App
+     * @var Duality\App
      */
     protected $app;
 
     /**
      * Creates a new error handler
-     * @param Duality\System\App $app
+     * @param Duality\App $app
      */
     public function __construct(App $app)
     {
@@ -59,7 +59,7 @@ class SQLite extends Database
 
     /**
      * Returns a create table statement
-     * @param Duality\System\Structure\DbTable $table
+     * @param Duality\Structure\DbTable $table
      * @param array $config
      * @return string
      */
@@ -81,7 +81,7 @@ class SQLite extends Database
 
     /**
      * Returns a drop table statement
-     * @param Duality\System\Structure\DbTable $table
+     * @param Duality\Structure\DbTable $table
      * @param boolean $ifExists
      * @return string
      */
@@ -98,7 +98,7 @@ class SQLite extends Database
 
     /**
      * Returns a add column statement
-     * @param Duality\System\Structure\DbTable $table
+     * @param Duality\Structure\DbTable $table
      * @param string $property
      * @param string $definition
      * @return string
@@ -114,8 +114,8 @@ class SQLite extends Database
 
     /**
      * Returns a modify column statement
-     * @param Duality\System\Structure\DbTable $table
-     * @param Duality\System\Structure\Property $property
+     * @param Duality\Structure\DbTable $table
+     * @param Duality\Structure\Property $property
      * @param string $definition
      * @return string
      */
@@ -126,7 +126,7 @@ class SQLite extends Database
 
     /**
      * Returns a insert table statement
-     * @param Duality\System\Structure\DbTable $table
+     * @param Duality\Structure\DbTable $table
      * @param array $item
      * @return string
      */
@@ -156,7 +156,7 @@ class SQLite extends Database
 
     /**
      * Returns an update table statement
-     * @param Duality\System\Structure\DbTable $table
+     * @param Duality\Structure\DbTable $table
      * @param array $item
      * @return string
      */
@@ -176,7 +176,7 @@ class SQLite extends Database
 
     /**
      * Returns a delete statement
-     * @param Duality\System\Structure\DbTable $table
+     * @param Duality\Structure\DbTable $table
      * @return string
      */
     public function getDelete(DbTable $table)

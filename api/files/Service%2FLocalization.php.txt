@@ -8,12 +8,12 @@
  * @license     MIT
  */
 
-namespace Duality\System\Service;
+namespace Duality\Service;
 
-use Duality\System\Core\DualityException;
-use Duality\System\Core\InterfaceService;
-use Duality\System\Core\InterfaceStorage;
-use Duality\System\App;
+use Duality\Core\DualityException;
+use Duality\Core\InterfaceService;
+use Duality\Core\InterfaceStorage;
+use Duality\App;
 
 /**
  * Default localization service
@@ -25,7 +25,7 @@ implements InterfaceStorage, InterfaceService
 {
 	/**
 	 * The dependent application container
-	 * @var Duality\System\App
+	 * @var Duality\App
 	 */
 	protected $app;
 
@@ -78,7 +78,7 @@ implements InterfaceStorage, InterfaceService
 
 	/**
 	 * Creates a new error handler
-	 * @param Duality\System\App $app
+	 * @param Duality\App $app
 	 */
 	public function __construct(App &$app)
 	{

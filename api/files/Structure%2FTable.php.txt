@@ -8,9 +8,9 @@
  * @license     MIT
  */
 
-namespace Duality\System\Structure;
+namespace Duality\Structure;
 
-use \Duality\System\Core\Structure;
+use \Duality\Core\Structure;
 
 /**
  * Table class
@@ -32,7 +32,7 @@ extends Structure
 
     /**
      * Adds a property to the table
-     * @param \Duality\System\Structure\Property $property
+     * @param \Duality\Structure\Property $property
      */
 	public function addProperty(Property $property)
 	{
@@ -41,7 +41,7 @@ extends Structure
 
     /**
      * Adds a row to the table
-     * @param \Duality\System\Structure\TableRow $row
+     * @param \Duality\Structure\TableRow $row
      * @param int $position
      */
 	public function addRow(TableRow $row, $position = null)
@@ -72,7 +72,7 @@ extends Structure
 
     /**
      * Check whether a property exists or not
-     * @param \Duality\System\Structure\Property $property
+     * @param \Duality\Structure\Property $property
      * @return boolean
      */
 	public function propertyExists(Property $property)

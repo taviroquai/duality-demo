@@ -8,10 +8,10 @@
  * @license     MIT
  */
 
-namespace Duality\System\Structure;
+namespace Duality\Structure;
 
-use Duality\System\Core\Structure;
-use Duality\System\Core\Data;
+use Duality\Core\Structure;
+use Duality\Core\Data;
 
 /**
  * Table row class
@@ -21,7 +21,7 @@ extends Structure
 {	
     /**
      * The dependant table
-     * @var \Duality\System\Structure\Table
+     * @var \Duality\Structure\Table
      */
 	protected $table;
     
@@ -41,7 +41,7 @@ extends Structure
 
     /**
      * Sets the dependent table
-     * @param \Duality\System\Structure\Table $table
+     * @param \Duality\Structure\Table $table
      */
 	public function setTable(Table $table)
 	{
@@ -50,12 +50,12 @@ extends Structure
 
     /**
      * Gets the dependant table
-     * @return \Duality\System\Structure\Table $table
-     * @throws \Duality\System\Core\DualityException
+     * @return \Duality\Structure\Table $table
+     * @throws \Duality\Core\DualityException
      */
 	public function getTable()
 	{
-		if (!is_subclass_of($this->table, 'Duality\System\Structure\Table')) {
+		if (!is_subclass_of($this->table, 'Duality\Structure\Table')) {
 			throw new DualityException("Row is orphan", 3);
 		}
 		return $this->table;
@@ -63,9 +63,9 @@ extends Structure
 
     /**
      * Adds data to the row
-     * @param \Duality\System\Structure\Property $property
-     * @param \Duality\System\Core\Data $data
-     * @throws \Duality\System\Core\DualityException
+     * @param \Duality\Structure\Property $property
+     * @param \Duality\Core\Data $data
+     * @throws \Duality\Core\DualityException
      */
 	public function addData(Property $property, Data $data)
 	{
@@ -77,9 +77,9 @@ extends Structure
 
     /**
      * Gets the row property data
-     * @param \Duality\System\Structure\Property $property
+     * @param \Duality\Structure\Property $property
      * @return string|int
-     * @throws \Duality\System\Core\DualityException
+     * @throws \Duality\Core\DualityException
      */
 	public function getData(Property $property)
 	{

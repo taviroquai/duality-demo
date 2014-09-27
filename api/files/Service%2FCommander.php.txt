@@ -8,11 +8,11 @@
  * @license     MIT
  */
 
-namespace Duality\System\Service;
+namespace Duality\Service;
 
-use Duality\System\Core\InterfaceService;
-use Duality\System\Core\InterfaceCommander;
-use Duality\System\App;
+use Duality\Core\InterfaceService;
+use Duality\Core\InterfaceCommander;
+use Duality\App;
 
 /**
  * Commander service
@@ -22,7 +22,7 @@ implements InterfaceCommander, InterfaceService
 {
 	/**
 	 * The dependent application container
-	 * @var Duality\System\App
+	 * @var Duality\App
 	 */
 	protected $app;
 
@@ -39,7 +39,7 @@ implements InterfaceCommander, InterfaceService
 
 	/**
 	 * Creates a new error handler
-	 * @param Duality\System\App $app
+	 * @param Duality\App $app
 	 */
 	public function __construct(App $app)
 	{

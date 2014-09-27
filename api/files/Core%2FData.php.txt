@@ -8,7 +8,7 @@
  * @license     MIT
  */
 
-namespace Duality\System\Core;
+namespace Duality\Core;
 
 /**
  * Holds a data value and a default value

@@ -8,10 +8,10 @@
  * @license     MIT
  */
 
-namespace Duality\System\Http;
+namespace Duality\Http;
 
-use \Duality\System\Structure\Http;
-use \Duality\System\Structure\Url;
+use \Duality\Structure\Http;
+use \Duality\Structure\Url;
 
 /**
  * HTTP request class
@@ -26,7 +26,7 @@ class Request extends Http {
 
 	/**
      * Creates a new HTTP request
-     * @param Duality\System\Structure\Url $url
+     * @param Duality\Structure\Url $url
      */
 	public function __construct(Url $url = NULL)
 	{

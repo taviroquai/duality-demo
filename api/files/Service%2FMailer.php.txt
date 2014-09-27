@@ -8,11 +8,11 @@
  * @license     MIT
  */
 
-namespace Duality\System\Service;
+namespace Duality\Service;
 
-use Duality\System\Core\InterfaceService;
-use Duality\System\Core\InterfaceMailer;
-use Duality\System\App;
+use Duality\Core\InterfaceService;
+use Duality\Core\InterfaceMailer;
+use Duality\App;
 
 /**
  * Default mailer service
@@ -22,7 +22,7 @@ implements InterfaceMailer, InterfaceService
 {
 	/**
 	 * The dependent application container
-	 * @var Duality\System\App
+	 * @var Duality\App
 	 */
 	protected $app;
 
@@ -40,7 +40,7 @@ implements InterfaceMailer, InterfaceService
 
 	/**
 	 * Creates a new error handler
-	 * @param Duality\System\App $app
+	 * @param Duality\App $app
 	 */
 	public function __construct(App $app)
 	{
@@ -49,7 +49,7 @@ implements InterfaceMailer, InterfaceService
 
 	/**
 	 * Initiates the service
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function init()
 	{
@@ -89,7 +89,7 @@ implements InterfaceMailer, InterfaceService
 
 	/**
 	 * Terminates the service
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function terminate()
 	{
@@ -104,7 +104,7 @@ implements InterfaceMailer, InterfaceService
 	 * @param string $encr
 	 * @param string $port
 	 * @param int $debugLevel
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function setSMTP($host, $user = '', $pass = '', $encr = 'tls', $port = 587, $debugLevel = 0)
 	{
@@ -122,7 +122,7 @@ implements InterfaceMailer, InterfaceService
 	/**
 	 * Set mail to
 	 * @param string $to
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function to($to)
 	{
@@ -133,7 +133,7 @@ implements InterfaceMailer, InterfaceService
 	/**
 	 * Add address
 	 * @param string $address
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function addAdress($address)
 	{
@@ -145,7 +145,7 @@ implements InterfaceMailer, InterfaceService
 	 * Add copy
 	 * @param string $address
 	 * @param boolean $bcc
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function copy($address, $bcc = true)
 	{
@@ -161,7 +161,7 @@ implements InterfaceMailer, InterfaceService
 	 * Set reply address
 	 * @param string $address
 	 * @param string $name
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function reply($address, $name)
 	{
@@ -174,7 +174,7 @@ implements InterfaceMailer, InterfaceService
 	 * Set mail from
 	 * @param string $from
 	 * @param string $name
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function from($from, $name)
 	{
@@ -185,7 +185,7 @@ implements InterfaceMailer, InterfaceService
 	/**
 	 * Set mail subject
 	 * @param string $subject
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function subject($subject)
 	{
@@ -197,7 +197,7 @@ implements InterfaceMailer, InterfaceService
 	 * Set body and alternate text body
 	 * @param string $html
 	 * @param string $altBody
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function body($html, $altBody = 'Message in plain text for non-HTML mail clients')
 	{
@@ -209,7 +209,7 @@ implements InterfaceMailer, InterfaceService
 	/**
 	 * Set mail attachments
 	 * @param array $list
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function attach($list)
 	{
@@ -220,7 +220,7 @@ implements InterfaceMailer, InterfaceService
 	/**
 	 * Send mail
 	 * @param \Closure $callback
-	 * @return Duality\System\Service\Mailer
+	 * @return Duality\Service\Mailer
 	 */
 	public function send(\Closure $callback)
 	{

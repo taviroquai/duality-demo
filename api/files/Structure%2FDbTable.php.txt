@@ -8,9 +8,9 @@
  * @license     MIT
  */
 
-namespace Duality\System\Structure;
+namespace Duality\Structure;
 
-use Duality\System\Service\Database;
+use Duality\Service\Database;
 
 /**
  * Database table class
@@ -20,13 +20,13 @@ extends Table
 {
     /**
      * Holds the dependant database
-     * @var \Duality\System\Structure\Database
+     * @var \Duality\Structure\Database
      */
 	protected $database;
 	
     /**
      * Creates a new database table giving a database structure
-     * @param \Duality\System\Structure\Database $database
+     * @param \Duality\Structure\Database $database
      */
 	public function __construct(Database $database)
 	{
@@ -35,7 +35,7 @@ extends Table
 
     /**
      * Sets table properties from an entity (ORM functionality)
-     * @param \Duality\System\Structure\Entity $entity
+     * @param \Duality\Structure\Entity $entity
      */
 	public function setPropertiesFromEntity(Entity $entity)
 	{
@@ -66,7 +66,7 @@ extends Table
 			$row = new TableRow;
 			$row->setTable($this);
 			foreach ($this->getProperties() as $property) {
-				$data = new \Duality\System\Core\Data;
+				$data = new \Duality\Core\Data;
 				$data->setValue($trow[(string) $property]);
 				$row->addData($property, $data);
 			}

@@ -8,13 +8,13 @@
  * @license     MIT
  */
 
-namespace Duality\System\Service;
+namespace Duality\Service;
 
-use Duality\System\Core\DualityException;
-use Duality\System\Core\InterfaceService;
-use Duality\System\Core\InterfaceErrorHandler;
-use Duality\System\File\StreamFile;
-use Duality\System\App;
+use Duality\Core\DualityException;
+use Duality\Core\InterfaceService;
+use Duality\Core\InterfaceErrorHandler;
+use Duality\File\StreamFile;
+use Duality\App;
 
 /**
  * Default logger service
@@ -24,7 +24,7 @@ implements InterfaceErrorHandler, InterfaceService
 {
 	/**
 	 * The dependent application container
-	 * @var Duality\System\App
+	 * @var Duality\App
 	 */
 	protected $app;
 	
@@ -46,19 +46,11 @@ implements InterfaceErrorHandler, InterfaceService
 
 	/**
 	 * Creates a new error handler
-	 * @param Duality\System\App $app
+	 * @param Duality\App $app
 	 */
 	public function __construct(App $app)
 	{
 		$this->app = $app;
-	}
-
-	/**
-	 * Call terminate logger
-	 */
-	public function __destruct()
-	{
-		$this->terminate();
 	}
 
 	/**
@@ -128,23 +120,26 @@ implements InterfaceErrorHandler, InterfaceService
 
 	    switch ($errno) {
 	    case E_USER_ERROR:
-	        $msg  = "My FATAL error [$errno] $errstr\n";
-	        $msg .= "on line $errline in file $errfile, PHP ". PHP_VERSION . " (" . PHP_OS . ")\n";
-	        $msg .= "Aborting...\n";
+	        $msg  = "My Fatal Error [$errno] $errstr on line $errline in file $errfile\n";
+	        $msg .= "PHP ". PHP_VERSION . " (" . PHP_OS . ")\n";
+	        $msg .= "Cannot continue. Aborting...\n";
 	        break;
 
 	    case E_USER_WARNING:
-	        $msg  = "My Warning error [$errno] $errstr on line $errline in file $errfile\n";
+	        $msg  = "My Warning [$errno] $errstr on line $errline in file $errfile\n";
 	        break;
 
 	    case E_USER_NOTICE:
-	        $msg  = "My Notice error [$errno] $errstr on line $errline in file $errfile\n";
+	        $msg  = "My Notice [$errno] $errstr on line $errline in file $errfile\n";
 	        break;
 
 	    default:
-	        $msg  = "My Notice error [$errno] $errstr on line $errline in file $errfile\n";
+	        $msg  = "My Notice [$errno] $errstr on line $errline in file $errfile\n";
 	        break;
 	    }
+        
+        // Add date to message
+        $msg = date('Y-m-d H:i:s').": ".$msg;
 
 	    // write log
 	    $this->file->write($msg);

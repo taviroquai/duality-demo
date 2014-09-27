@@ -8,10 +8,10 @@
  * @license     MIT
  */
 
-namespace Duality\System\Structure;
+namespace Duality\Structure;
 
-use Duality\System\Core\DualityException;
-use Duality\System\Core\Structure;
+use Duality\Core\DualityException;
+use Duality\Core\Structure;
 
 /**
  * File structure class
@@ -95,7 +95,7 @@ extends Structure
 
     /**
      * Saves the file to media
-     * @throws \\Duality\System\Core\DualityException
+     * @throws \\Duality\Core\DualityException
      */
 	public function save()
 	{

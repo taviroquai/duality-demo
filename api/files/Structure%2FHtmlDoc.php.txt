@@ -8,10 +8,10 @@
  * @license     MIT
  */
 
-namespace Duality\System\Structure;
+namespace Duality\Structure;
 
-use Duality\System\Core\Structure;
-use Duality\System\File\TextFile;
+use Duality\Core\Structure;
+use Duality\File\TextFile;
 
 /**
  * HTML document class
@@ -36,7 +36,7 @@ extends Structure
 
     /**
      * Imports the HTML from a text file
-     * @param \Duality\System\File\TextFile $file
+     * @param \Duality\File\TextFile $file
      */
 	public function loadFile(TextFile $file)
 	{

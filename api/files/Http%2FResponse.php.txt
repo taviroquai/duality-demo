@@ -8,9 +8,9 @@
  * @license     MIT
  */
 
-namespace Duality\System\Http;
+namespace Duality\Http;
 
-use \Duality\System\Structure\Http;
+use \Duality\Structure\Http;
 
 /**
  * HTTP response class

@@ -8,9 +8,9 @@
  * @license     MIT
  */
 
-namespace Duality\System\File;
+namespace Duality\File;
 
-use Duality\System\Structure\File;
+use Duality\Structure\File;
 
 /**
  * Text file class

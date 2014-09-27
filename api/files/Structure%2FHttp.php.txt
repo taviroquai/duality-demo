@@ -8,10 +8,10 @@
  * @license     MIT
  */
 
-namespace Duality\System\Structure;
+namespace Duality\Structure;
 
-use \Duality\System\Core\DualityException;
-use \Duality\System\Core\Structure;
+use \Duality\Core\DualityException;
+use \Duality\Core\Structure;
 
 /**
  * HTTP transport class
@@ -69,9 +69,9 @@ extends Structure
 
     /**
      * Sets the HTTP url
-     * @param \Duality\System\Structure\Url $url
+     * @param \Duality\Structure\Url $url
 <<<<<<< HEAD
-     * @throws \Duality\System\Core\DualityException
+     * @throws \Duality\Core\DualityException
 =======
      * @throws DualityException
      * @return Http;
@@ -88,7 +88,7 @@ extends Structure
 
     /**
      * Gets the HTTP url 
-     * @return \Duality\System\Structure\Url
+     * @return \Duality\Structure\Url
      */
 	public function getUrl()
 	{
@@ -99,7 +99,7 @@ extends Structure
      * Sets the HTTP method
      * @param string $method
 <<<<<<< HEAD
-     * @throws \Duality\System\Core\DualityException
+     * @throws \Duality\Core\DualityException
 =======
      * @throws \Exception
      * @return Http;
@@ -147,7 +147,7 @@ extends Structure
      * Sets the HTTP headers
      * @param array $headers
 <<<<<<< HEAD
-     * @throws \Duality\System\Core\DualityException
+     * @throws \Duality\Core\DualityException
 =======
      * @throws \Exception
      * @return Http;
@@ -187,7 +187,7 @@ extends Structure
      * Sets an HTTP cookie
      * @param array $cookies
 <<<<<<< HEAD
-     * @throws \Duality\System\Core\DualityException
+     * @throws \Duality\Core\DualityException
 =======
      * @throws DualityException
      * @return Http;
@@ -247,7 +247,7 @@ extends Structure
      * Sets the HTTP connection timestamp
      * @param int $timestamp
 <<<<<<< HEAD
-     * @throws \Duality\System\Core\DualityException
+     * @throws \Duality\Core\DualityException
 =======
      * @throws \Exception
      * @return Http;

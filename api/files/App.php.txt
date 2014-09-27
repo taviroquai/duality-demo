@@ -8,21 +8,22 @@
  * @license     MIT
  */
 
-namespace Duality\System;
+namespace Duality;
 
-use Duality\System\Core\DualityException;
-use Duality\System\Core\Container;
-use Duality\System\Database\SQLite;
-use Duality\System\Database\MySql;
-use Duality\System\Service\Logger;
-use Duality\System\Service\Validator;
-use Duality\System\Service\Session;
-use Duality\System\Service\Auth;
-use Duality\System\Service\Cache;
-use Duality\System\Service\Mailer;
-use Duality\System\Service\Paginator;
-use Duality\System\Service\SSH;
-use Duality\System\Service\Server;
+use Duality\Core\DualityException;
+use Duality\Core\Container;
+use Duality\Database\SQLite;
+use Duality\Database\MySql;
+use Duality\File\StreamFile;
+use Duality\Service\Logger;
+use Duality\Service\Validator;
+use Duality\Service\Session;
+use Duality\Service\Auth;
+use Duality\Service\Cache;
+use Duality\Service\Mailer;
+use Duality\Service\Paginator;
+use Duality\Service\SSH;
+use Duality\Service\Server;
 
 /**
  * Default application container
@@ -47,6 +48,12 @@ extends Container
 	 * @var array
 	 */
 	protected $cache;
+    
+    /**
+     * Holds the application output buffer
+     * @var \Duality\File\StreamFile
+     */
+    protected $buffer;
 
 	/**
 	 * Create a new application
@@ -58,18 +65,21 @@ extends Container
 		$this->path = $path;
 		$this->config = $config;
         $this->services = array();
+        $this->buffer = new StreamFile(
+            $this->getConfigItem('buffer') ? 
+            $this->getConfigItem('buffer') :
+            'php://output'
+        );
+        $this->buffer->open();
 
 		$me =& $this;
 
 		// Set script end hook
-		ob_start();
 		register_shutdown_function(function() use ($me) {
 			foreach($me->getServices() as $name => $service) {
-				if (method_exists($service, 'terminate')) {
-					$me->call($name)->terminate();	
-				}
+				$me->call($name)->terminate();
 			}
-			echo ob_get_clean();
+            $me->getBuffer()->close();
 		});
 	}
 
@@ -82,22 +92,22 @@ extends Container
 
 		// Setup default services
 		$defaults = array(
-            'logging'   => 'Duality\System\Service\Logger',
-            'validator' => 'Duality\System\Service\Validator',
-            'session'   => 'Duality\System\Service\Session',
-            'auth'      => 'Duality\System\Service\Auth',
-            'cache'     => 'Duality\System\Service\Cache',
-            'i18n'      => 'Duality\System\Service\Mailer',
-            'paginator' => 'Duality\System\Service\Paginator',
-            'ssh'       => 'Duality\System\Service\SSH',
-            'server'    => 'Duality\System\Service\Server',
+            'logging'   => 'Duality\Service\Logger',
+            'validator' => 'Duality\Service\Validator',
+            'session'   => 'Duality\Service\Session',
+            'auth'      => 'Duality\Service\Auth',
+            'cache'     => 'Duality\Service\Cache',
+            'i18n'      => 'Duality\Service\Mailer',
+            'paginator' => 'Duality\Service\Paginator',
+            'ssh'       => 'Duality\Service\SSH',
+            'server'    => 'Duality\Service\Server',
         );
 
 		// Register database
 		if ($this->getConfigItem('db.dsn')) {
 			$defaults['db'] = (strpos($this->getConfigItem('db.dsn'), 'mysql') === 0) ?
-				'Duality\System\Database\MySql' : 
-				'Duality\System\Database\SQLite';
+				'Duality\Database\MySql' : 
+				'Duality\Database\SQLite';
 		}
 
 		// register defaults
@@ -138,6 +148,15 @@ extends Container
 	{
 		return $this->config;
 	}
+    
+    /**
+	 * Returns application output buffer
+	 * @return \Duality\File\StreamFile;
+	 */
+	public function getBuffer()
+	{
+		return $this->buffer;
+	}
 
 	/**
 	 * Returns environment configuration
@@ -161,7 +180,7 @@ extends Container
 	 * Register service
 	 * @param string $name
 	 * @param \Closure $service
-	 * @return Duality\System\App
+	 * @return Duality\App
 	 */
 	public function register($name, \Closure $service)
 	{

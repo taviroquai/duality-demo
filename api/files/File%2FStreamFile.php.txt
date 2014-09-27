@@ -8,10 +8,10 @@
  * @license     MIT
  */
 
-namespace Duality\System\File;
+namespace Duality\File;
 
-use Duality\System\Core\DualityException;
-use Duality\System\Structure\File;
+use Duality\Core\DualityException;
+use Duality\Structure\File;
 
 /**
  * The stream class
@@ -36,32 +36,33 @@ class StreamFile extends File {
     /**
      * Opens the stream
      * @param string $options
-     * @throws \Duality\System\Core\DualityException
+     * @throws \Duality\Core\DualityException
      */
 	public function open($options = 'w+b')
 	{
-		$this->handler = @fopen($this->path, $options);
-		if (!is_resource($this->handler)) {
-			throw new DualityException("Could not open stream: ".$this->getPath(), 5);
-		}
+        if (!is_resource($this->handler)) {
+            $this->handler = @fopen($this->path, $options);
+            if (!is_resource($this->handler)) {
+                throw new DualityException("Could not open stream: ".$this->getPath(), 5);
+            }
+        }
 	}
 
     /**
      * Closes the stream
-     * @throws \Duality\System\Core\DualityException
+     * @throws \Duality\Core\DualityException
      */
 	public function close()
 	{
-		if (!is_resource($this->handler)) {
-			throw new DualityException("Stream not opened: ".$this->getPath(), 6);
+		if (is_resource($this->handler)) {
+			fclose($this->handler);
 		}
-		fclose($this->handler);
 	}
 
     /**
      * Sets up the load callback
      * @param \Closure $callback
-     * @throws \\Duality\System\Core\DualityException
+     * @throws \\Duality\Core\DualityException
      */
 	public function load(\Closure $callback = null)
 	{
@@ -80,12 +81,12 @@ class StreamFile extends File {
     /**
      * Saves the full file stream
      * @return boolean
-     * @throws \Duality\System\Core\DualityException
+     * @throws \Duality\Core\DualityException
      */
 	public function save()
 	{
 		if (!is_resource($this->handler)) {
-			throw new DualityException("Stream not opened: ".$this->getPath(), 6);
+			$this->open();
 		}
 		rewind($this->handler);
 		return fwrite($this->handler, $this->content);
@@ -95,12 +96,12 @@ class StreamFile extends File {
      * Quick write content to file
      * @param string $data
      * @return boolean
-     * @throws \Duality\System\Core\DualityException
+     * @throws \Duality\Core\DualityException
      */
 	public function write($data)
 	{
 		if (!is_resource($this->handler)) {
-			throw new DualityException("Stream not opened: ".$this->getPath(), 6);
+			$this->open();
 		}
 		return fwrite($this->handler, $data);
 	}

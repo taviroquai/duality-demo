@@ -8,10 +8,10 @@
  * @license     MIT
  */
 
-namespace Duality\System\Structure;
+namespace Duality\Structure;
 
-use Duality\System\Core\DualityException;
-use Duality\System\Core\Structure;
+use Duality\Core\DualityException;
+use Duality\Core\Structure;
 
 /**
  * Url class

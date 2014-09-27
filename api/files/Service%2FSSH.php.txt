@@ -8,12 +8,12 @@
  * @license     MIT
  */
 
-namespace Duality\System\Service;
+namespace Duality\Service;
 
-use Duality\System\Core\DualityException;
-use Duality\System\Core\InterfaceService;
-use Duality\System\Core\InterfaceRemote;
-use Duality\System\App;
+use Duality\Core\DualityException;
+use Duality\Core\InterfaceService;
+use Duality\Core\InterfaceRemote;
+use Duality\App;
 
 /**
  * Class SSH for remote operations
@@ -23,7 +23,7 @@ implements InterfaceService, InterfaceRemote
 {
     /**
      * The dependent application container
-     * @var Duality\System\App
+     * @var Duality\App
      */
     protected $app;
 
@@ -59,7 +59,7 @@ implements InterfaceService, InterfaceRemote
 
     /**
      * Creates a new error handler
-     * @param Duality\System\App $app
+     * @param Duality\App $app
      */
     public function __construct(App $app)
     {

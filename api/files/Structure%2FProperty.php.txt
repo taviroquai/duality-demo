@@ -8,9 +8,9 @@
  * @license     MIT
  */
 
-namespace Duality\System\Structure;
+namespace Duality\Structure;
 
-use Duality\System\Core\Structure;
+use Duality\Core\Structure;
 
 /**
  * Property class

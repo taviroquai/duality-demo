@@ -8,14 +8,14 @@
  * @license     MIT
  */
 
-namespace Duality\System\Service;
+namespace Duality\Service;
 
-use Duality\System\Core\InterfaceService;
-use Duality\System\Core\Structure;
-use Duality\System\Structure\Property;
-use Duality\System\Structure\DbTable;
-use Duality\System\Structure\Entity;
-use Duality\System\App;
+use Duality\Core\InterfaceService;
+use Duality\Core\Structure;
+use Duality\Structure\Property;
+use Duality\Structure\DbTable;
+use Duality\Structure\Entity;
+use Duality\App;
 
 /**
  * Database class
@@ -26,7 +26,7 @@ implements InterfaceService
 {
     /**
      * Holds application container
-     * @var Duality\System\App
+     * @var Duality\App
      */
     protected $app;
 
@@ -44,7 +44,7 @@ implements InterfaceService
 
     /**
      * Creates a new database service
-     * @param Duality\System\App $app
+     * @param Duality\App $app
      */
 	public function __construct(App &$app)
 	{
@@ -74,12 +74,12 @@ implements InterfaceService
      */
     public function terminate()
     {
-        $this->pdo->close();
+        $this->pdo = NULL;
     }
 
     /**
      * Adds a table to the database
-     * @param \Duality\System\Structure\DbTable $table
+     * @param \Duality\Structure\DbTable $table
      */
 	public function addTable(DbTable $table)
 	{
@@ -106,7 +106,7 @@ implements InterfaceService
 
     /**
      * Creates a table from an Entity
-     * @param Duality\System\Structure\Entity $entity
+     * @param Duality\Structure\Entity $entity
      */
     public function createTableFromEntity(Entity $entity)
     {

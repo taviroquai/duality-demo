@@ -8,11 +8,11 @@
  * @license     MIT
  */
 
-namespace Duality\System\Http;
+namespace Duality\Http;
 
-use Duality\System\Core\InterfaceService;
-use Duality\System\Structure\Url;
-use Duality\System\App;
+use Duality\Core\InterfaceService;
+use Duality\Structure\Url;
+use Duality\App;
 
 /**
  * Simulates an HTTP client
@@ -22,7 +22,7 @@ implements InterfaceService
 {
 	/**
      * Holds application container
-     * @var Duality\System\App
+     * @var Duality\App
      */
     protected $app;
 
@@ -78,7 +78,7 @@ implements InterfaceService
     /**
      * Creates a client request
      * @param string $url
-     * @return \Duality\System\Http\Request
+     * @return \Duality\Http\Request
      */
 	public static function createRequest(Url $url = '')
 	{
@@ -88,8 +88,8 @@ implements InterfaceService
 
     /**
      * Executes a request
-     * @param \Duality\System\Http\Request $request
-     * @return \Duality\System\Http\Response
+     * @param \Duality\Http\Request $request
+     * @return \Duality\Http\Response
      */
 	public function execute(Request $request)
 	{
