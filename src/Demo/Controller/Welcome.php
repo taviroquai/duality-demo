@@ -55,8 +55,8 @@ extends UserController
 	 * @param Duality\Http\Request $req
 	 * @param Duality\Http\Response $res
 	 */
-	public function doUsersList(&$req, &$res, $params = array()) {
-
+	public function doUsersList(&$req, &$res, $params = array())
+	{
 		// Create a default output
 		$out = array('msg' => 'Example get data from database with ajax...', 'items' => array());
 	    
@@ -81,8 +81,8 @@ extends UserController
 	 * @param Duality\Http\Request $req
 	 * @param Duality\Http\Response $res
 	 */
-	public function doValidation(&$req, &$res, $params = array()) {
-
+	public function doValidation(&$req, &$res, $params = array())
+	{
 		// Set default output
 		$out = array('result' => 1, 'type' => 'has-success', 'msg' => 'OK!');
 
@@ -98,7 +98,7 @@ extends UserController
 				'value'	=> $req->getParam('pass'),
 				'rules'	=> 'required|password',
 				'fail'	=> 'Invalid password: minimum 6 characters, with numbers, small and capital letters.',
-				'info'	=> 'Password is valid'	
+				'info'	=> 'Password is valid'
 			)
 		);
 		
