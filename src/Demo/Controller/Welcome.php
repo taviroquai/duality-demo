@@ -81,10 +81,10 @@ extends UserController
 	 * @param Duality\Http\Request $req
 	 * @param Duality\Http\Response $res
 	 */
-	public function doValidation(&$req, &$res, $params = array())
+	public function doSubmit(&$req, &$res, $params = array())
 	{
-		// Set default output
-		$out = array('result' => 1, 'type' => 'has-success', 'msg' => 'OK!');
+		// Get validator
+		$validator = $this->app->call('validator');
 
 		// Create validation rules
 		$rules = array(
@@ -101,12 +101,24 @@ extends UserController
 				'info'	=> 'Password is valid'
 			)
 		);
-		
-		// Validate HTTP request input with rules and default output
-		$this->app->call('validator')->validateAssist($req, $rules, $out);
-		
-		// Tell response to add HTTP content type header and set output
-		$res->addHeader('Content-type', 'application/json')
-			->setContent(json_encode($out));
+
+		// Check for Assist plugin input
+		if ($req->getParam('_assist_rule')) {
+
+			// Set default output
+			$out = array('result' => 1, 'type' => 'has-success', 'msg' => 'OK!');
+			
+			// Validate HTTP request input with rules and default output
+			$validator->validateAssist($req, $rules, $out);
+			
+			// Tell response to add HTTP content type header and set output
+			$res->addHeader('Content-type', 'application/json')
+				->setContent(json_encode($out));
+
+		// Continue with form submittion
+		} else {
+			$result = $validator->validateAll($rules) ? 'yes' : 'no';
+			$res->setContent('Validate result: ' . $result);
+		}
 	}
 }

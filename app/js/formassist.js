@@ -27,7 +27,9 @@
 
         this.selector = selector; 
         this.url = url;
-        if (typeof url !== 'string') this.url = $(selector).attr('action');
+        if (typeof url !== 'string') {
+            this.url = $(selector).attr('action');
+        }
         this.rules = {};
         this.result = true;
         this.asyncDoneCount = 0;
@@ -36,7 +38,9 @@
         // TODO: throw exception if not found or is not a form
         $(this.selector).submit(function(e) {
             me.checkAll();
-            if (typeof cb == 'function') return cb(me, e);
+            if (typeof cb == 'function') {
+                return cb(me, e);
+            }
         });
         return this;
     }
@@ -60,7 +64,7 @@
         var me = this;
         for (var key in me.rules) {
             me.validate(key, function() {
-                me.validateAllDone(cb, true)
+                me.validateAllDone(cb, true);
             });
         }
     }
@@ -68,10 +72,16 @@
     FormAssist.prototype.validateAllDone = function(cb, checkAll) {
         this.asyncDoneCount++;
         var total = this.objectKeys(this.rules);
-        if (this.asyncDoneCount < total) return;
+        if (this.asyncDoneCount < total) {
+            return;
+        }
         this.asyncDoneCount = 0;
-        if (checkAll) this.checkAll();
-        if (typeof cb == 'function') cb(this);
+        if (checkAll) {
+            this.checkAll();
+        }
+        if (typeof cb == 'function') {
+            cb(this);
+        }
     }
 
     FormAssist.prototype.validate = function(key, cb) {

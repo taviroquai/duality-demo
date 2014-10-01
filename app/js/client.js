@@ -26,9 +26,9 @@ Client.routes = function () {
     });
 
     $('form').FormAssist(function(form, e) {
-        e.preventDefault(); // example purposes only
+        if (form.result) return true;
         form.validateAll();
-        return false; // example purposes only
+        e.preventDefault();
     })
     .rule('email', 'input[name="email"]')
     .rule('pass', 'input[name="pass"]')
