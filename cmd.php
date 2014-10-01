@@ -24,23 +24,6 @@ use Duality\App;
 // Create application container
 $app = new App(dirname(__FILE__), $config);
 
-// Register database
-if ($app->getConfigItem('db.dsn')) {
-	$app->register('db', function () use ($app) {
-	    return strpos($app->getConfigItem('db.dsn'), 'mysql') === 0 ? 
-			new MySql($app) : 
-			new SQLite($app);
-	});
-}
-
-// Register commander
-$app->register('cmd', function() use ($app) {
-	return new Commander($app);
-});
-
-// Initiate services
-$app->initServices();
-
 // Register ssh command responder
 if ($app->getConfigItem('remote')) {
 	$app->call('cmd')->addResponder('/^ssh:(.*):(.*)$/i', function($args) use ($app) {

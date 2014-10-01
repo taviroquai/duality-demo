@@ -4,35 +4,41 @@ error_reporting(E_ALL);
 ini_set('display_errors', true);
 
 // Configure autoloaders
-require_once './vendor/autoload.php';
+require_once '../duality/vendor/autoload.php';
 require_once './src/autoload.php';
 
 // Define local configuration
 return array(
 
+	// Localization configuration
+	'i18n'	=> array(
+		'default'	=> 'en_US',
+		'dir'		=> './data/lang'
+	),
+
 	// Server Example: $app->call('server')->getRequestFromGlobals();
-	'server'	=> array(
-		'url'	=> '/duality-demo',
+	'server'		=> array(
+		'url'		=> '/duality-demo',
 		'hostname'	=> 'localhost'
 	),
 
 	// Logger Example: $app->call('logger')->log('My message!');
-	'logger'	=> array(
-		'file'	=> './data/logs.txt'
+	'logger'		=> array(
+		'file'		=> './data/logs.txt'
 	),
 
 	// Database Example: $app->call('db')->reloadFromConfig();
 	'db'	=> array(
-		'dsn'	=> 'sqlite:./data/db.sqlite',
-		'user'	=> 'root',
-		'pass'	=> 'toor',
+		'dsn'		=> 'sqlite:./data/db.sqlite',
+		'user'		=> 'root',
+		'pass'		=> 'toor',
 		'schema'	=> 'data/schema.php'
 	),
 
 	// Security Example: $password = $app->encrypt('password');
 	'security'	=> array(
-		'salt'	=> 'secret!',
-		'hash'	=> 'sha256'
+		'salt'		=> 'secret!',
+		'hash'		=> 'sha256'
 	),
 
 	/* Mailer SMTP Example: 
