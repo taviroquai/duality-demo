@@ -11,9 +11,10 @@ require_once './src/autoload.php';
 return array(
 
 	// Localization configuration
-	'i18n'	=> array(
+	'locale' => array(
 		'default'	=> 'en_US',
-		'dir'		=> './data/lang'
+		'dir'		=> './data/lang',
+		'timezone'	=> 'Europe/Lisbon'
 	),
 
 	// Server Example: $app->call('server')->getRequestFromGlobals();
