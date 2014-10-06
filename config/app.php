@@ -25,7 +25,7 @@ return array(
 
 	// Logger Example: $app->call('logger')->log('My message!');
 	'logger'		=> array(
-		'file'		=> './data/logs.txt'
+		'buffer'		=> './data/logs.txt'
 	),
 
 	// Database Example: $app->call('db')->reloadFromConfig();

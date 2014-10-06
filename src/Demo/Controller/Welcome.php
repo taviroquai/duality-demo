@@ -2,12 +2,15 @@
 
 namespace Demo\Controller;
 
-use Duality\Service\UserController;
-use Demo\Model\User;
-use Duality\Structure\HtmlDoc;
+use \Duality\Structure\HtmlDoc;
+use \Duality\Structure\Http\Request;
+use \Duality\Structure\Http\Response;
+use \Duality\Service\DefaultController;
+use \Demo\Model\User;
+
 
 class Welcome
-extends UserController
+extends DefaultController
 {
     /**
      * Holds the default HTML document
@@ -35,8 +38,8 @@ extends UserController
      * @param array $params
 	 */
 	public function doIndex(
-        \Duality\Http\Request &$req,
-        \Duality\Http\Response &$res,
+        Request &$req,
+        Response &$res,
         $params = array()
     ) {
 

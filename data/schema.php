@@ -10,7 +10,7 @@ return array(
 	),
 	'update' => array(),
 	'seed'	=> array(
-		array('table' => 'users', 'drop' => true, 'values' => array(
+		array('table' => 'users', 'truncate' => true, 'values' => array(
 			'email' => 'admin@domain.com',
 			'password' => 'admin::hash'
 			)

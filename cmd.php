@@ -24,6 +24,23 @@ use Duality\App;
 // Create application container
 $app = new App(dirname(__FILE__), $config);
 
+// Get the commander
+$cmd = $app->call('cmd');
+
+// Add the database responders
+$cmd->addResponder('/^db:create$/i', function()	use ($app)
+{
+    return $app->call('db')->createFromConfig($app->getConfig());
+});
+$cmd->addResponder('/^db:update$/i', function()	use ($app)
+{
+    return $app->call('db')->updateFromConfig($app->getConfig());
+});
+$cmd->addResponder('/^db:seed$/i', function() use ($app)
+{
+    return $app->call('db')->seedFromConfig($app->getConfig());
+});
+
 // Register ssh command responder
 if ($app->getConfigItem('remote')) {
 	$app->call('cmd')->addResponder('/^ssh:(.*):(.*)$/i', function($args) use ($app) {
