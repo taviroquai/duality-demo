@@ -11,6 +11,7 @@ $app = new App(dirname(__FILE__), $config);
 
 // Get server
 $server = $app->call('server');
+$server->setRequest($server->getRequestFromGlobals());
 
 // Set demo routes
 $server->setHome('\Demo\Controller\Welcome@doIndex');

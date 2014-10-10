@@ -5,12 +5,12 @@ namespace Demo\Controller;
 use \Duality\Structure\HtmlDoc;
 use \Duality\Structure\Http\Request;
 use \Duality\Structure\Http\Response;
-use \Duality\Service\DefaultController;
+use \Duality\Service\Controller\Base as BaseController;
 use \Demo\Model\User;
 
 
 class Welcome
-extends DefaultController
+extends BaseController
 {
     /**
      * Holds the default HTML document
