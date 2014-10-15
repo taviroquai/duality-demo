@@ -106,13 +106,16 @@ extends BaseController
 		);
 
 		// Check for Assist plugin input
-		if ($req->getParam('_assist_rule')) {
+		$key = $req->getParam('_assist_rule');
+		if (!empty($key) && array_key_exists($key, $rules)) {
 
 			// Set default output
 			$out = array('result' => 1, 'type' => 'has-success', 'msg' => 'OK!');
 			
 			// Validate HTTP request input with rules and default output
-			$validator->validateAssist($req, $rules, $out);
+            $out['result'] = $validator->validate($key, $rules[$key]);
+            $out['type'] = $out['result'] == false ? 'has-error' : 'has-success';
+            $out['msg'] = $validator->getMessage($key);
 			
 			// Tell response to add HTTP content type header and set output
 			$res->addHeader('Content-type', 'application/json')
