@@ -66,7 +66,7 @@ extends BaseController
 	    try {
 	        // Get data
 	        $out['items'] = $this->app->call('db')
-	        		->createTableFromEntity(new User())
+	        		->getTable('users')
 	        		->find(0, 10)
 	        		->toArray();
 
