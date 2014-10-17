@@ -15,8 +15,8 @@ $server->setRequest($server->getRequestFromGlobals());
 
 // Set demo routes
 $server->setHome('\Demo\Controller\Welcome@doIndex');
-$server->addRoute('/\/json/i',		'\Demo\Controller\Welcome@doUsersList');
-$server->addRoute('/\/submit/i',	'\Demo\Controller\Welcome@doSubmit');
+$server->addRoute('/^\/json$/i',	'\Demo\Controller\Welcome@doUsersList');
+$server->addRoute('/^\/submit$/i',	'\Demo\Controller\Welcome@doSubmit');
 
 // Tell server to execute services
 $server->listen();

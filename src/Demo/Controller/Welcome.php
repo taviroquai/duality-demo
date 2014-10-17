@@ -65,10 +65,9 @@ extends BaseController
 	    
 	    try {
 	        // Get data
-	        $out['items'] = $this->app->call('db')
-	        		->getTable('users')
-	        		->find(0, 10)
-	        		->toArray();
+	        $table = $this->app->call('db')->getTable('users');
+	        $table->find(0, 10)->removeColumn('password');
+	        $out['items'] = $table->toArray();
 
 	    } catch (\PDOException $e) {
 	        $out['msg'] = 'So bad! ' . $e->getMessage();
