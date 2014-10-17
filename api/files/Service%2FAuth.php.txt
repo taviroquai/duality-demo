@@ -13,9 +13,8 @@
 
 namespace Duality\Service;
 
-use Duality\Core\InterfaceService;
+use Duality\Core\AbstractService;
 use Duality\Core\InterfaceAuth;
-use Duality\App;
 
 /**
  * Default authentication service
@@ -28,32 +27,16 @@ use Duality\App;
  * @since   0.7.0
  */
 class Auth 
-implements InterfaceAuth, InterfaceService
+extends AbstractService
+implements InterfaceAuth
 {
     /**
-     * The dependent application container
+     * Holds the session key
      * 
-     * @var \Duality\App The application container
+     * @var string The session auth key
      */
-    protected $app;
-
-    /**
-     * Holds the current logged username
-     * 
-     * @var string The current user logged in
-     */
-    protected $current;
-
-    /**
-     * Creates a new error handler
-     * 
-     * @param \Duality\App &$app The application container
-     */
-    public function __construct(App &$app)
-    {
-        $this->app = $app;
-    }
-
+    protected $sessionKey = '__auth';
+        
     /**
      * Initiates the service
      * 
@@ -61,7 +44,7 @@ implements InterfaceAuth, InterfaceService
      */
     public function init()
     {
-        $this->current = '';
+        
     }
 
     /**
@@ -86,8 +69,7 @@ implements InterfaceAuth, InterfaceService
     public function login($username, $password, \Closure $storageCallback)
     {
         if (count($storageCallback($username, $password))) {
-            $this->app->call('session')->set('__user', $username);
-            $this->current = $username;
+            $this->app->call('session')->set($this->sessionKey, $username);
             return true;    
         }
         return false;
@@ -100,11 +82,7 @@ implements InterfaceAuth, InterfaceService
      */
     public function isLogged()
     {
-        $user = $this->app->call('session')->get('__user');
-        if (!empty($user)) {
-            return true;
-        }
-        return false;
+        return $this->app->call('session')->has($this->sessionKey);
     }
 
     /**
@@ -124,7 +102,7 @@ implements InterfaceAuth, InterfaceService
      */
     public function whoAmI()
     {
-        return $this->current;
+        return $this->app->call('session')->get($this->sessionKey);
     }
 
 }

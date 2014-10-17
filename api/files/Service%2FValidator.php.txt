@@ -14,10 +14,9 @@
 namespace Duality\Service;
 
 use Duality\Core\DualityException;
-use Duality\Core\InterfaceService;
+use Duality\Core\AbstractService;
 use Duality\Core\InterfaceValidator;
 use Duality\Structure\Storage;
-use Duality\App;
 
 /**
  * Default validator service
@@ -29,32 +28,15 @@ use Duality\App;
  * @link    http://github.com/taviroquai/duality
  * @since   0.7.0
  */
-class Validator 
-implements InterfaceService, InterfaceValidator
+class Validator
+extends AbstractService
 {
-    /**
-     * The dependent application container
-     * 
-     * @var \Duality\App Holds the application container
-     */
-    protected $app;
-
     /**
      * Holds the messages storage
      * 
      * @var \Duality\Core\InterfaceStorage Holds the messages storage
      */
     protected $storage;
-
-    /**
-     * Creates a new validator
-     * 
-     * @param \Duality\App &$app Give the application container
-     */
-    public function __construct(App &$app)
-    {
-        $this->app = $app;
-    }
 
     /**
      * Initiates the service
@@ -75,30 +57,6 @@ implements InterfaceService, InterfaceValidator
     public function terminate()
     {
         $this->storage->reset();
-    }
-
-    /**
-     * Process Form Assist validation
-     * 
-     * @param Duality\Http\Request &$req        Give the HTTP request
-     * @param array                $rules       Give the rules to validate
-     * @param array                &$outputJson Give a variable to modify output
-     * 
-     * @return void
-     */
-    public function validateAssist(&$req, $rules, &$outputJson)
-    {
-        $input = $req->getParams();
-        if ($req->hasParam('_assist_rule') 
-            && array_key_exists($input['_assist_rule'], $rules)
-        ) {
-            $key = $req->getParam('_assist_rule');
-            $outputJson['result'] = (int) $this->validate($key, $rules[$key]);
-            $outputJson['msg'] = $this->storage->get($key);
-            if ($outputJson['result'] === 0) {
-                $outputJson['type'] = 'has-error';
-            }
-        }
     }
 
     /**
@@ -129,17 +87,16 @@ implements InterfaceService, InterfaceValidator
     public function validate($key, $params)
     {
         $result = true;
-        if (empty($params['rules'])) {
-            throw new DualityException("Error Validation: rules required", 1);
-        }
-        if (!array_key_exists('value', $params)) {
-            throw new DualityException("Error Validation: value required", 2);
-        }
-        if (empty($params['fail']) || empty($params['info'])) {
+        if (empty($params['rules'])
+            || empty($params['value'])
+            || empty($params['fail']) 
+            || empty($params['info'])
+        ) {
             throw new DualityException(
-                "Error Validation: fail and info messages are required", 3
+                "Error Validation: required rules, value, fail and info", 1
             );
         }
+        
         $rules = explode('|', $params['rules']);
         foreach ($rules as $item) {
             $values = explode(':', $item);
@@ -180,6 +137,18 @@ implements InterfaceService, InterfaceValidator
     public function getMessages()
     {
         return $this->storage->asArray();
+    }
+
+    /**
+     * Get message by key
+     * 
+     * @param string $key Give the key of rule to get resulting message
+     * 
+     * @return string Returns stored message by key
+     */
+    public function getMessage($key)
+    {
+        return $this->storage->get($key);
     }
 
     /**
@@ -241,9 +210,7 @@ implements InterfaceService, InterfaceValidator
      */
     public function isEquals($value, $params)
     {
-        if (!isset($params[0])) {
-            return false;
-        }
+        $params[0] = empty($params[0]) ? '' : $params[0];
         return $value === $params[0];
     }
 

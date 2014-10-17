@@ -14,11 +14,10 @@
 namespace Duality\Service;
 
 use Duality\Core\DualityException;
-use Duality\Core\InterfaceService;
+use Duality\Core\AbstractService;
 use Duality\Structure\Url;
 use Duality\Structure\Http\Request;
 use Duality\Structure\Http\Response;
-use Duality\App;
 
 /**
  * Simulates an HTTP server
@@ -31,15 +30,8 @@ use Duality\App;
  * @since   0.7.0
  */
 class Server
-implements InterfaceService
+extends AbstractService
 {
-    /**
-     * Holds application container
-     * 
-     * @var Duality\App Holds the application container
-     */
-    protected $app;
-
     /**
      * Default request
      * 
@@ -83,16 +75,6 @@ implements InterfaceService
     protected $defaultController;
 
     /**
-     * Creates a new server
-     * 
-     * @param \Duality\App &$app Give the application container
-     */
-    public function __construct(App &$app)
-    {
-        $this->app = $app;
-    }
-
-    /**
      * Initiates the service
      * 
      * @return void
@@ -108,12 +90,12 @@ implements InterfaceService
         $this->baseURL = new Url($url);
 
         // Create default request and response
-        $this->setRequest($this->getRequestFromGlobals());
+        // $this->setRequest($this->getRequestFromGlobals());
         $this->setResponse($this->createResponse());
 
         // Create default routes
         $this->routes = array();
-        $this->setDefault('\Duality\Service\UserController@doIndex');
+        $this->setDefault('\Duality\Service\Controller\Base@doIndex');
     }
 
     /**
@@ -173,32 +155,37 @@ implements InterfaceService
         // Set default values
         $result = false;
         $matches = array();
-        
-        // Start looking for matching routes patterns
-        foreach ($this->routes as $ns => $cb) {
+
+        if (!empty($this->request)) {
             
-            // Check if route matches and stop looking
-            $uri = str_replace(
-                (string) $this->baseURL, '', $this->request->getUrl()->getUri()
-            );
-            if ($result = preg_match($ns, $uri, $matches)) {
-                array_shift($matches);
-                $cb = is_string($cb) ? $this->validateStringAction($cb) : $cb;
-                break;
+            // Start looking for matching routes patterns
+            foreach ($this->routes as $ns => $cb) {
+                
+                // Check if route matches and stop looking
+                $uri = str_replace(
+                    (string) $this->baseURL, '', $this->request->getUrl()->getUri()
+                );
+                $uri = '/' . trim($uri, '/ ');
+                if ($result = preg_match($ns, $uri, $matches)) {
+                    array_shift($matches);
+                    $cb = is_string($cb) ? $this->validateStringAction($cb) : $cb;
+                    break;
+                }
             }
+            
+            // No route matches. Call default controller
+            if (!$result) {
+                $cb = is_string($this->defaultController) ? 
+                    $this->validateStringAction($this->defaultController) : 
+                    $this->defaultController;
+            }
+            
+            // Finally, call controller
+            call_user_func_array(
+                $cb, array(&$this->request, &$this->response, $matches)
+            );
         }
-        
-        // No route matches. Call default controller
-        if (!$result) {
-            $cb = is_string($this->defaultController) ? 
-                $this->validateStringAction($cb) : 
-                $this->defaultController;
-        }
-        
-        // Finally, call controller
-        call_user_func_array(
-            $cb, array(&$this->request, &$this->response, $matches)
-        );
+
         $this->send($this->response);
     }
     
@@ -212,16 +199,9 @@ implements InterfaceService
      * @return array The valid and callable callback
      */
     protected function validateStringAction($cb)
-    {
-        // Validate string controller@action
-        if (!is_string($cb)) {
-            throw new DualityException(
-                "Error Route: can only translate from string: ".$cb, 1
-            );
-        }
-        
+    {   
         // Translate
-        list($controllerClass, $method) = explode('@', $cb);
+        @list($controllerClass, $method) = explode('@', $cb);
         
         // Validate class name
         if (!class_exists($controllerClass)) {
@@ -341,13 +321,54 @@ implements InterfaceService
      */
     public function send(Response $response, $withHeaders = true)
     {
-        if ($withHeaders) {
-            foreach ($response->getHeaders() as $k => $v) {
-                header($k.': '.$v);
-            }
+        $sapi_type = php_sapi_name();
+        $no_support = array('cli', 'cli-server');
+        if ($withHeaders && !in_array($sapi_type, $no_support)) {
+            $this->sendHeaders($response);
+            $this->sendCookies($response);
         }
-        http_response_code($response->getStatus());
+
         $this->app->getBuffer()->write($response->getContent());
+    }
+
+    /**
+     * Sends HTTP Headers if supported by SAPI
+     * 
+     * @param \Duality\Structure\Http\Response $response The response to be sent
+     * 
+     * @return \Duality\Service\Server This instance
+     */
+    public function sendHeaders(Response $response)
+    {
+        http_response_code($response->getStatus());
+        foreach ($response->getHeaders() as $k => $v) {
+            header($k.': '.$v);
+        }
+        return $this;
+    }
+
+    /**
+     * Sets an HTTP cookie
+     * 
+     * @param \Duality\Structure\Http\Response $response The response to be sent
+     * 
+     * @throws DualityException When cookie is invalid
+     * 
+     * @return \Duality\Service\Server This instance
+     */
+    public function sendCookies(Response $response)
+    {
+        foreach ($response->getCookies() as $item) {
+            setcookie(
+                $item['name'],
+                $item['value'],
+                $item['expire'],
+                $item['path'],
+                $item['domain'],
+                $item['secure']
+            );
+        }
+        return $this;
     }
 
     /**
@@ -355,11 +376,18 @@ implements InterfaceService
      * 
      * @return Request The resulting request instance
      */
-    public static function getRequestFromGlobals()
+    public function getRequestFromGlobals()
     {
-        $url = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . 
-            "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        if (empty($_SERVER['REQUEST_METHOD'])) {
+            return false;
+        }
 
+        $url = (empty($_SERVER['HTTPS']) ? 'http' 
+            : 'https') . "://"
+            . (empty($_SERVER['HTTP_HOST']) ? 
+                $this->getHostname() : $_SERVER['HTTP_HOST'])
+            . (empty($_SERVER['REQUEST_URI']) ? '/' : $_SERVER['REQUEST_URI']);
+        
         $request = new Request(new Url($url));
         $request->setMethod($_SERVER['REQUEST_METHOD']);
         $request->setContent(file_get_contents('php://input'));

@@ -26,30 +26,12 @@ namespace Duality\Core;
 interface InterfaceErrorHandler
 {
     /**
-     * Default error action
-     * 
-     * @param int    $errno   The error code
-     * @param string $errstr  The error description
-     * @param string $errfile The file name where the error occured
-     * @param int    $errline The line where the error occured
-     * 
-     * @return void
-     */
-    public function error($errno, $errstr, $errfile, $errline);
-
-    /**
      * Log action
      * 
-     * @param string $msg Give the complete log message
+     * @param string $msg        Give the complete log message
+     * @param int    $error_type Give the type of information to be logged
      * 
      * @return void
      */
-    public function log($msg);
-
-    /**
-     * Terminates error handler
-     * 
-     * @return void
-     */
-    public function terminate();
+    public function log($msg, $error_type = E_USER_NOTICE);
 }

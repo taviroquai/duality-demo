@@ -13,7 +13,7 @@
 
 namespace Duality\Structure;
 
-use \Duality\Core\InterfaceStorage;
+use Duality\Core\InterfaceStorage;
 
 /**
  * Session interface
@@ -67,6 +67,19 @@ implements InterfaceStorage
     public function set($key, $value)
     {
         $this->buffer[$key] = $value;
+    }
+
+    /**
+     * Insert item on specified position. Usefull for ordered keys.
+     * 
+     * @param string $key   Give the key to be identified
+     * @param string $value Give the value to be stored
+     * 
+     * @return void
+     */
+    public function insert($key, $value)
+    {
+        array_splice($this->buffer, $key, 0, array($value));
     }
 
     /**

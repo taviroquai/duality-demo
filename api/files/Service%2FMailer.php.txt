@@ -13,10 +13,9 @@
 
 namespace Duality\Service;
 
-use \Duality\Core\InterfaceService;
-use \Duality\Core\InterfaceMailer;
-use \Duality\Structure\Storage;
-use \Duality\App;
+use Duality\Structure\Storage;
+use Duality\Core\AbstractService;
+use Duality\Core\InterfaceMailer;
 
 /**
  * Default mailer service
@@ -29,15 +28,9 @@ use \Duality\App;
  * @since   0.7.0
  */
 class Mailer 
-implements InterfaceMailer, InterfaceService
+extends AbstractService
+implements InterfaceMailer
 {
-    /**
-     * The dependent application container
-     * 
-     * @var Duality\App The application container
-     */
-    protected $app;
-
     /**
      * Holds the current mail params
      * 
@@ -53,23 +46,13 @@ implements InterfaceMailer, InterfaceService
     protected $smtp;
 
     /**
-     * Creates a new error handler
-     * 
-     * @param \Duality\App &$app The application container
-     */
-    public function __construct(App &$app)
-    {
-        $this->app = $app;
-    }
-
-    /**
      * Initiates the service
      * 
      * @return \Duality\Service\Mailer This instance
      */
     public function init()
     {
-        $this->storage = new Storage;
+        $this->current = new Storage;
         $this->smtp = new Storage;
 
         $this->current->importArray(
@@ -168,7 +151,7 @@ implements InterfaceMailer, InterfaceService
      * 
      * @return Duality\Service\Mailer This instance
      */
-    public function addAdress($address)
+    public function addAddress($address)
     {
         $list = $this->current->get('to');
         $list[] = $address;
@@ -221,10 +204,10 @@ implements InterfaceMailer, InterfaceService
      */
     public function from($from, $name)
     {
-        $from = $this->current->get('from');
-        $from['email'] = $from;
-        $from['name'] = $name;
-        $this->current->set('from', $reply);  
+        $config = $this->current->get('from');
+        $config['email'] = $from;
+        $config['name'] = $name;
+        $this->current->set('from', $config);  
         return $this;
     }
 
@@ -319,7 +302,7 @@ implements InterfaceMailer, InterfaceService
             $mail->addReplyTo($replyEmail, $replyName);
         }
         if (!$this->current->get('cc')) {
-            $mail->addCC($this->current->set('cc'); 
+            $mail->addCC($this->current->set('cc')); 
         }
         if (!$this->current->set('bcc')) {
             $mail->addBCC($this->current->set('bcc'));
