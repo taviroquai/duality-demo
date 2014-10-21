@@ -19,7 +19,7 @@ Minimal API Usage Example
 	// Include local configuration
     $config = array(
         'server' => array(
-            'base_url' => '/duality',
+            'url' => '/duality-demo',
             'hostname' => 'localhost'
         )
     );
