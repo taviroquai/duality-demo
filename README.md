@@ -16,16 +16,16 @@ Minimal API Usage Example
 -------------
 
 ```php
-	// Include local configuration
+    // Include local configuration
     $config = array(
-        'server' => array(
+    'server' => array(
             'url' => '/duality-demo',
             'hostname' => 'localhost'
         )
     );
         
     // Load dependencies
-	require_once './vendor/autoload.php';
+    require_once './vendor/autoload.php';
         
     // Tell what our application uses
     use Duality\App;
