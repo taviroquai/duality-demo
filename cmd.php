@@ -24,21 +24,25 @@ use Duality\App;
 // Create application container
 $app = new App(dirname(__FILE__), $config);
 
+// Reload database schema
+$config = $app->call('db')->getSchemaConfig();
+$app->call('db')->reloadFromConfig($config);
+
 // Get the commander
 $cmd = $app->call('cmd');
 
 // Add the database responders
 $cmd->addResponder('/^db:create$/i', function()	use ($app)
-{
-    return $app->call('db')->createFromConfig($app->getConfig());
+{	
+    return $app->call('db')->createFromConfig();
 });
 $cmd->addResponder('/^db:update$/i', function()	use ($app)
 {
-    return $app->call('db')->updateFromConfig($app->getConfig());
+    return $app->call('db')->updateFromConfig();
 });
 $cmd->addResponder('/^db:seed$/i', function() use ($app)
 {
-    return $app->call('db')->seedFromConfig($app->getConfig());
+    return $app->call('db')->seedFromConfig();
 });
 
 // Register ssh command responder
