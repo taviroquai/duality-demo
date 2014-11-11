@@ -33,12 +33,11 @@ extends Controller
 	}
 
 	/**
-	 * Run request to get users list
+	 * Run request to get homepage
 	 * 
-	 * @param \Duality\Http\Request  $req The HTTP request
-	 * @param \Duality\Http\Response $res The HTTP response
-	 * 
-     * @param array $params The uri params
+	 * @param \Duality\Structure\Http\Request  $req    The HTTP request
+	 * @param \Duality\Structure\Http\Response $res    The HTTP response
+     * @param array                            $params The uri params
 	 */
 	public function doIndex(Request &$req, Response &$res, $params = array())
 	{
