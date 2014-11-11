@@ -58,7 +58,15 @@ implements InterfaceErrorHandler
                 "Error Config: log_file configuration not found", 1
             );
         }
-        $this->stream = new StreamFile($this->app->getConfigItem('logger.buffer'));
+        $filename = $this->app->getPath()
+            . DIRECTORY_SEPARATOR
+            . $this->app->getConfigItem('logger.buffer');
+        if (!file_exists($filename)) {
+            throw new DualityException(
+                "Error Config: invalid log_file:" . $filename, 2
+            );
+        }
+        $this->stream = new StreamFile($filename);
         $this->stream->open('a+b');
         set_error_handler(array($this, 'error'));
     }
@@ -71,7 +79,7 @@ implements InterfaceErrorHandler
     public function terminate()
     {
         if ($this->error) {
-            echo 'Ops! Something went wrong...';
+            $this->app->getBuffer()->write('Ops! Something went wrong...');
         }
         if ($this->stream) {
             $this->stream->close();
@@ -123,15 +131,15 @@ implements InterfaceErrorHandler
                 . " on line $errline in file $errfile\n";
             break;
         }
+
+        // Set error
+        $this->error = true;
         
         // Add date to message
         $msg = date('Y-m-d H:i:s').": ".$msg;
 
         // write log to buffer
         $this->stream->write($msg);
-
-        // Set error
-        $this->error = true;
 
         /* Don't execute PHP internal error handler */
         return true;

@@ -67,6 +67,7 @@ extends AbstractService
 
     /**
      * Holds the calendar
+     * TODO: Release 2.0 (PHP5.5)
      * 
      * @var \IntlCalendar Holds the locale calendar
      */
@@ -74,6 +75,7 @@ extends AbstractService
 
     /**
      * Holds the time zone
+     * TODO: Release 2.0 (PHP5.5)
      * 
      * @var \IntlTimeZone Holds the current timezone
      */
@@ -86,14 +88,23 @@ extends AbstractService
      */
     public function init()
     {
+        if (!extension_loaded('intl')) {
+            throw new DualityException("Error: intl extension not loaded", 1);
+        }
+
         $this->storage = new Storage;
         $this->storage->reset();
 
         if ($this->app->getConfigItem('locale.default') == null) {
             throw new DualityException("Error: locale configuration missing", 2);
         }
+        $this->directory = $this->app->getPath()
+                . DIRECTORY_SEPARATOR
+                . $this->directory;
         if ($this->app->getConfigItem('locale.dir')) {
-            $this->directory = $this->app->getConfigItem('locale.dir');
+            $this->directory = $this->app->getPath()
+                . DIRECTORY_SEPARATOR
+                . $this->app->getConfigItem('locale.dir');
         }
         if (!is_dir($this->directory) || !is_readable($this->directory)) {
             throw new DualityException(
@@ -128,26 +139,30 @@ extends AbstractService
      */
     public function setLocale($code, $timezone = 'Europe/Lisbon')
     {
-        $code = \Locale::canonicalize($code);
-        $this->current = $code;
+        $this->current = \Locale::canonicalize($code);
 
         // Validate locale and translations directory
-        if (\Locale::acceptFromHttp($code) === null
-            || !is_dir($this->directory.DIRECTORY_SEPARATOR.$this->current)
-        ) {
+        $directory = $this->directory
+            . DIRECTORY_SEPARATOR
+            . $this->current;
+        if ($this->current === null || !is_dir($directory)) {
             $this->current = \Locale::canonicalize(
                 $this->app->getConfigItem('locale.default')
             );
         }
 
-        // Define default locale
-        \Locale::setDefault($this->current);
-        $directory = $this->directory.DIRECTORY_SEPARATOR.$this->current;
+        // Validate messages file
+        $directory = $this->directory
+            . DIRECTORY_SEPARATOR
+            . $this->current;
         if (!file_exists($directory.DIRECTORY_SEPARATOR.'messages.php')) {
             throw new DualityException(
                 "Error locale: invalid messages file ".$this->current, 3
             );
         }
+
+        // Define default locale
+        \Locale::setDefault($this->current);
         $this->storage->importArray(
             include($directory.DIRECTORY_SEPARATOR.'messages.php')
         );
@@ -158,12 +173,16 @@ extends AbstractService
         );
 
         // Create a time zone
-        $this->timezone = \IntlTimeZone::createTimeZone($timezone);
+        // TODO: Release 2.0 (PHP5.5)
+        //$this->timezone = \IntlTimeZone::createTimeZone($timezone);
 
         // Create a calendar
+        // TODO: Release 2.0 (PHP5.5)
+        /*
         $this->calendar = \IntlCalendar::createInstance(
             $this->timezone, $this->current
         );
+        */
 
         // Create a DateTimeFormater
         $this->datetimeFormatter = new \IntlDateFormatter(
@@ -258,6 +277,7 @@ extends AbstractService
 
     /**
      * Returns the calendar
+     * TODO: Release 2.0 (PHP5.5)
      * 
      * @return \IntlCalendar The current calendar instance
      */
@@ -268,6 +288,7 @@ extends AbstractService
 
     /**
      * Returns the time zone
+     * TODO: Release 2.0 (PHP5.5)
      * 
      * @return \IntlTimeZone The current timezone instance
      */

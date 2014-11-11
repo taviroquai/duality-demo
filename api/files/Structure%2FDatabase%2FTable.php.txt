@@ -14,6 +14,7 @@
 namespace Duality\Structure\Database;
 
 use Duality\Core\InterfaceStorage;
+use Duality\Structure\Property;
 use Duality\Structure\TableRow;
 use Duality\Structure\Table as DataTable;
 use Duality\Structure\Entity;
@@ -70,6 +71,16 @@ extends DataTable
     }
 
     /**
+     * Gets the table primary key
+     * 
+     * @return string The primary key field
+     */
+    public function getPrimaryKey()
+    {
+        return $this->primaryKey;
+    }
+
+    /**
      * Gets all table properties
      * 
      * @param boolean $cache The cached information
@@ -84,7 +95,7 @@ extends DataTable
                 $this->database->getColumns($this)
             );
             while($item = $result->fetch(\PDO::FETCH_ASSOC)) {
-                $property = new \Duality\Structure\Property($item['name']);
+                $property = new Property($item['name']);
                 $this->addColumn($property);
             }
         }
@@ -102,7 +113,7 @@ extends DataTable
     {
         $this->columns->reset();
         foreach ($columns as $name => $item) {
-            $property = new \Duality\Structure\Property($name);
+            $property = new Property($name);
             $this->addColumn($property);
         }
     }
@@ -132,7 +143,7 @@ extends DataTable
      * @param array  $values The condition values as array
      * @param string $select The columns string (SELECT clause)
      * 
-     * @return Table The resulting table
+     * @return \Duality\Structure\Database\Table This table
      */
     public function find(
         $offset = 0, $limit = 10, $where = '', $values = array(), $select = '*'
@@ -156,6 +167,43 @@ extends DataTable
     }
 
     /**
+     * Loads table values with limit
+     * 
+     * @param \Duality\Structure\Database\Filter $filter The filter object
+     * 
+     * @return \Duality\Structure\Database\Table This table
+     * 
+     * @since 0.18.0
+     */
+    public function filter(Filter $filter) {
+        $sql = $this->database->getSelect(
+            $filter->getSelect(),
+            $this->getName(),
+            $filter->getWhere(),
+            $filter->getGroupBy(),
+            $filter->getOffset(),
+            $filter->getLimit()
+        );
+        $stm = $this->database->getPDO()->prepare($sql);
+        $stm->execute($filter->getWhereValues());
+        
+        $this->rows->reset();
+        $columns = explode(',', $filter->getSelect());
+        while ($trow = $stm->fetch(\PDO::FETCH_ASSOC)) {
+            $row = new TableRow($this);
+            $row->setTable($this);
+            foreach ($columns as $column) {
+                $row->addData(
+                    new Property($column),
+                    $trow[(string) $column]
+                );
+            }
+            $this->addRow($row);
+        }
+        return $this;
+    }
+
+    /**
      * Add item
      * 
      * @param string $key   Give the key to be identified
@@ -167,7 +215,7 @@ extends DataTable
     {
         $sql = $this->database->getInsert($this, (array) $value);
         $stm = $this->database->getPDO()->prepare($sql);
-        $stm->execute(array_values((array)$value));
+        $result = $stm->execute(array_values((array)$value));
     }
 
     /**
@@ -182,7 +230,9 @@ extends DataTable
     {
         $sql = $this->database->getUpdate($this, (array) $value);
         $stm = $this->database->getPDO()->prepare($sql);
-        $stm->execute(array_values((array)$value));
+        $value = array_values((array)$value);
+        $value[] = $key;
+        $stm->execute($value);
     }
 
     /**
@@ -226,12 +276,18 @@ extends DataTable
      * 
      * @return array Returns all stored values
      */
-    public function asArray()
+    public function toArray()
     {
         $sql = $this->database->getSelect('*', $this->getName());
         $stm = $this->database->getPDO()->prepare($sql);
         $stm->execute();
-        return $stm->fetchAll(\PDO::FETCH_ASSOC);
+
+        $items = array();
+        $temp = $stm->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($temp as $item) {
+            $items[$item['id']] = $item;
+        }
+        return $items;
     }
 
     /**
@@ -246,11 +302,14 @@ extends DataTable
         foreach ($data as $key => $item) {
             if (!$this->has($key)) {
                 $sql = $this->database->getInsert($this, $item);
+                $item = array_values((array)$item);
             } else {
                 $sql = $this->database->getUpdate($this, $item);
+                $item = array_values((array)$item);
+                $item[] = $key;
             }
             $stm = $this->database->getPDO()->prepare($sql);
-            $stm->execute((array) $key);    
+            $stm->execute((array) $item);    
         }
     }
 
