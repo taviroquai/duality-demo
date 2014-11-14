@@ -27,6 +27,16 @@ Minimal API Usage Example
       
     // Create a new application container
     $app = new \Duality\App(dirname(__FILE__), $config);
+
+    // Get server and request
+    $server = $app->call('server');
+    $request = $server->getRequestFromGlobals($_SERVER, $_REQUEST);
+
+    // Validate HTTP request
+    if (!$request) die('HTTP request not found!');
+
+    // Set request
+    $server->setRequest($request);
      
     // Define default route
     $app->call('server')->setHome(function(&$req, &$res) {
