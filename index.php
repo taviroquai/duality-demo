@@ -5,7 +5,6 @@ $config = include_once('./config/app.php');
 
 // What will we use in our application?
 use Duality\App;
-use Duality\Structure\Http\Request;
 
 // Create application container
 $app = new App(dirname(__FILE__), $config);

@@ -15,9 +15,6 @@ if (!is_array($config)) {
 }
 
 // What will we use in our application?
-use Duality\Database\SQLite;
-use Duality\Database\MySql;
-use Duality\Service\Commander;
 use Duality\Service\SSH;
 use Duality\App;
 
@@ -49,7 +46,6 @@ $cmd->addResponder('/^db:seed$/i', function() use ($app)
 if ($app->getConfigItem('remote')) {
 	$app->call('cmd')->addResponder('/^ssh:(.*):(.*)$/i', function($args) use ($app) {
 		$args = array_slice($args, 1);
-		$config = $app->getConfig();
 
 		if (!$app->getConfigItem('remote.'.$args[0].'.username')) {
 			die("Error Config: username param for {$args[0]} not found".PHP_EOL);
