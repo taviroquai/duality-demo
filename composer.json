@@ -6,7 +6,7 @@
             "email": "mafonso333@gmail.com"
         }
     ],
-    "require-dev": {
-    	"taviroquai/duality": "@dev"
+    "require": {
+    	"taviroquai/duality": "v1.0.0"
     }
 }
