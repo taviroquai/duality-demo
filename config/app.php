@@ -17,12 +17,6 @@ return array(
         'timezone'  => 'Europe/Lisbon'
     ),
 
-    // Server Example: $app->call('server')->getRequestFromGlobals();
-    'server'        => array(
-        'url'       => '/duality-demo',
-        'hostname'  => 'localhost'
-    ),
-
     // Logger Example: $app->call('logger')->log('My message!');
     'logger'    => array(
         'buffer'    => './data/logs.txt'
