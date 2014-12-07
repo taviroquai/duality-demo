@@ -1,5 +1,7 @@
 {
-    "name": "mafonso/duality-demo",
+    "name": "taviroquai/duality-demo",
+    "description": "Project for Duality PHP Framework",
+    "license": "MIT",
     "authors": [
         {
             "name": "Marco Afonso",
