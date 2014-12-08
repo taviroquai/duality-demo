@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-    	"taviroquai/duality": "v1.0.0"
+    	"taviroquai/duality": ">=1.0.0"
     },
     "minimum-stability": "stable"
 }
